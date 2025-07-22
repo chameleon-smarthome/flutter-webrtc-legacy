@@ -310,7 +310,9 @@
 
         if(peerConnection)
         {
-            [self peerConnectionAddICECandidate:candidate peerConnection:peerConnection result:result];
+            if (candidate != nil && ![candidate isKindOfClass:[NSNull class]]) {
+                [self peerConnectionAddICECandidate:candidate peerConnection:peerConnection result:result];
+            }
         }else{
             result([FlutterError errorWithCode:[NSString stringWithFormat:@"%@Failed",call.method]
                                        message:[NSString stringWithFormat:@"Error: peerConnection not found!"]
