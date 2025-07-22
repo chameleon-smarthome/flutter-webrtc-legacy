@@ -301,12 +301,18 @@
         NSDictionary* argsMap = call.arguments;
         NSString* peerConnectionId = argsMap[@"peerConnectionId"];
         NSDictionary* candMap = argsMap[@"candidate"];
-        NSString *sdp = candMap[@"candidate"];
-        int sdpMLineIndex = ((NSNumber*)candMap[@"sdpMLineIndex"]).intValue;
-        NSString *sdpMid = candMap[@"sdpMid"];
+        NSString* sdp = candMap[@"candidate"];
+        id sdpMLineIndexValue = candMap[@"sdpMLineIndex"];
+        int sdpMLineIndex = 0;
+        if (![sdpMLineIndexValue isKindOfClass:[NSNull class]]) {
+            sdpMLineIndex = ((NSNumber*)candMap[@"sdpMLineIndex"]).intValue;
+        }
+        NSString* sdpMid = candMap[@"sdpMid"];
 
-        RTCIceCandidate* candidate = [[RTCIceCandidate alloc] initWithSdp:sdp sdpMLineIndex:sdpMLineIndex sdpMid:sdpMid];
-        RTCPeerConnection *peerConnection = self.peerConnections[peerConnectionId];
+        RTCIceCandidate* candidate = [[RTCIceCandidate alloc] initWithSdp:sdp
+                                                            sdpMLineIndex:sdpMLineIndex
+                                                                   sdpMid:sdpMid];
+        RTCPeerConnection* peerConnection = self.peerConnections[peerConnectionId];
 
         if(peerConnection)
         {
